@@ -17,11 +17,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("com.google.cloud.tools.jib")
 }
-
-val otelVersion = "1.21.0"
-val otelInstrumentationVersion = "1.21.0"
-val otelContribVersion = "1.21.0"
 
 repositories {
     mavenCentral()
@@ -33,10 +30,22 @@ repositories {
     mavenCentral()
 }
 
+jib {
+    from {
+        image= "eclipse-temurin:17"
+    }
+    to {
+        image = "java-manual-instrumentation-sample-app"
+    }
+    container {
+        ports = listOf("8080")
+    }
+}
+
 dependencies {
 
     // OpenTelemetry APIs and SDKs
-    implementation(platform("io.opentelemetry:opentelemetry-bom:${otelVersion}"))
+    implementation(platform("io.opentelemetry:opentelemetry-bom:1.44.1"))
     implementation("io.opentelemetry:opentelemetry-api")
     implementation("io.opentelemetry:opentelemetry-sdk")
 
@@ -44,27 +53,27 @@ dependencies {
     implementation("io.opentelemetry:opentelemetry-exporter-otlp")
 
     // OpenTelemetry Aws Xray dependencies
-    implementation("io.opentelemetry.contrib:opentelemetry-aws-xray-propagator:${otelContribVersion}-alpha")
-    implementation("io.opentelemetry.contrib:opentelemetry-aws-xray:${otelContribVersion}")
+    implementation("io.opentelemetry.contrib:opentelemetry-aws-xray-propagator:1.40.0-alpha")
+    implementation("io.opentelemetry.contrib:opentelemetry-aws-xray:1.40.0")
 
     // OpenTelemetry AWS SDK Library Instrumentation
-    implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:${otelInstrumentationVersion}-alpha"))
+    implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:2.10.0-alpha"))
     implementation("io.opentelemetry.instrumentation:opentelemetry-aws-sdk-2.2")
 
     // Opentelemetry OkHttp Library Instrumentation
-    implementation("io.opentelemetry.instrumentation:opentelemetry-okhttp-3.0:${otelInstrumentationVersion}-alpha")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-okhttp-3.0:2.10.0-alpha")
 
     implementation(project(":base"))
 
     constraints {
-        implementation("com.fasterxml.jackson:jackson-bom:2.13.4.20221013") {
+        implementation("com.fasterxml.jackson:jackson-bom:2.18.1") {
             because("bom used upstream is problematic. https://github.com/FasterXML/jackson-bom/issues/52#issuecomment-1292883281")
         }
     }
 
-    implementation("org.apache.logging.log4j:log4j-api:2.18.0")
-    implementation("org.apache.logging.log4j:log4j-core:2.18.0")
-    implementation("org.slf4j:slf4j-simple:2.0.3")
+    implementation("org.apache.logging.log4j:log4j-api:2.24.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.24.1")
+    implementation("org.slf4j:slf4j-simple:2.0.16")
 }
 
 

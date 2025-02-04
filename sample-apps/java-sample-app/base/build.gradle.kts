@@ -17,28 +17,26 @@ plugins {
     id("java-library")
 }
 
-val otelVersion = "1.21.0"
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
     // Used to have access to the APIs
-    api("io.opentelemetry:opentelemetry-api:${otelVersion}")
+    api("io.opentelemetry:opentelemetry-api:1.44.1")
 
     // Third party libraries used in this application
     // Exposed to dependent modules
     api("com.sparkjava:spark-core:2.9.4")
-    api("com.squareup.okhttp3:okhttp:4.10.0")
-    api(platform("software.amazon.awssdk:bom:2.19.12"))
+    api("com.squareup.okhttp3:okhttp:4.12.0")
+    api(platform("software.amazon.awssdk:bom:2.29.16"))
     api("software.amazon.awssdk:s3")
 
     // Not exposed to dependent modules
-    implementation("org.yaml:snakeyaml:1.33")
-    implementation("org.apache.logging.log4j:log4j-api:2.19.0")
-    implementation("org.apache.logging.log4j:log4j-core:2.19.0")
-    implementation("org.slf4j:slf4j-simple:2.0.6")
+    implementation("org.yaml:snakeyaml:2.3")
+    implementation("org.apache.logging.log4j:log4j-api:2.24.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.24.1")
+    implementation("org.slf4j:slf4j-simple:2.0.16")
 
 }
 
